@@ -1,4 +1,4 @@
-import { Search, ShoppingBag } from 'lucide-react';
+import { Search, ShoppingBag, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
@@ -34,6 +34,12 @@ const Header = () => {
         <div className="flex items-center gap-3">
           <button onClick={() => setSearchOpen(!searchOpen)} className="md:hidden p-2 rounded-full hover:bg-secondary transition-colors">
             <Search className="w-5 h-5 text-muted-foreground" />
+          </button>
+          <button
+            onClick={() => navigate('/profile')}
+            className="p-2 rounded-full hover:bg-secondary transition-colors"
+          >
+            <User className="w-5 h-5 text-muted-foreground" />
           </button>
           <button
             onClick={() => navigate('/checkout')}
