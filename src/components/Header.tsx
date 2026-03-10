@@ -36,6 +36,12 @@ const Header = () => {
             <Search className="w-5 h-5 text-muted-foreground" />
           </button>
           <button
+            onClick={() => navigate('/profile')}
+            className="p-2 rounded-full hover:bg-secondary transition-colors"
+          >
+            <User className="w-5 h-5 text-muted-foreground" />
+          </button>
+          <button
             onClick={() => navigate('/checkout')}
             className="relative p-2 rounded-full hover:bg-secondary transition-colors"
           >
