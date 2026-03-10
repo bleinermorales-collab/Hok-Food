@@ -1,82 +1,101 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Flame } from 'lucide-react';
+import { Star, Clock, Bike, MapPin } from 'lucide-react';
 import Header from '@/components/Header';
-import RestaurantCard from '@/components/RestaurantCard';
-import CuisineFilter from '@/components/CuisineFilter';
+import MenuItemCard from '@/components/MenuItemCard';
 import FloatingCart from '@/components/FloatingCart';
-import { restaurants, cuisineFilters } from '@/data/mock';
+import { restaurant } from '@/data/mock';
 
 const Index = () => {
-  const [activeCuisine, setActiveCuisine] = useState('Todas');
-
-  const filtered = activeCuisine === 'Todas'
-    ? restaurants
-    : restaurants.filter(r => r.cuisine === activeCuisine);
-
-  const featured = restaurants.filter(r => r.featured);
+  const [activeCategory, setActiveCategory] = useState<string>(restaurant.categories[0]?.id || '');
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
       {/* Hero */}
-      <section className="gradient-hero py-12 md:py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-lg"
-          >
-            <h1 className="text-3xl md:text-5xl font-extrabold text-primary-foreground leading-tight">
-              Tu comida favorita,{' '}
-              <span className="text-gradient">en minutos</span>
-            </h1>
-            <p className="mt-4 text-primary-foreground/70 text-base md:text-lg">
-              Descubre los mejores restaurantes cerca de ti y recibe tu pedido en la puerta de tu casa.
-            </p>
-          </motion.div>
-        </div>
+      <section className="relative h-52 md:h-72">
+        <img src={restaurant.image} alt={restaurant.name} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </section>
 
-      <main className="container mx-auto px-4 pb-32">
-        {/* Featured */}
-        <section className="mt-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Flame className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-bold text-foreground">Destacados</h2>
-          </div>
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
-            {featured.map((r, i) => (
-              <div key={r.id} className="min-w-[300px] max-w-[340px]">
-                <RestaurantCard restaurant={r} index={i} />
+      {/* Restaurant Info Card */}
+      <div className="container mx-auto px-4 -mt-16 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-card rounded-2xl p-5 shadow-elevated"
+        >
+          <div className="flex items-start gap-4">
+            <span className="text-4xl">{restaurant.logo}</span>
+            <div className="flex-1">
+              <h1 className="text-2xl font-extrabold text-card-foreground">{restaurant.name}</h1>
+              <p className="text-sm text-muted-foreground">{restaurant.cuisine}</p>
+              <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+                <span className="flex items-center gap-1 text-card-foreground">
+                  <Star className="w-4 h-4 fill-accent text-accent" />
+                  <strong>{restaurant.rating}</strong>
+                  <span className="text-muted-foreground">({restaurant.reviewCount})</span>
+                </span>
+                <span className="flex items-center gap-1 text-muted-foreground">
+                  <Clock className="w-4 h-4" /> {restaurant.deliveryTime}
+                </span>
+                <span className="flex items-center gap-1 text-muted-foreground">
+                  <Bike className="w-4 h-4" /> ${restaurant.deliveryFee} envío
+                </span>
+                <span className="flex items-center gap-1 text-muted-foreground">
+                  <MapPin className="w-4 h-4" /> Mín. ${restaurant.minOrder}
+                </span>
               </div>
-            ))}
+            </div>
           </div>
-        </section>
-
-        {/* All Restaurants */}
-        <section className="mt-10">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-bold text-foreground">Restaurantes</h2>
-          </div>
-
-          <CuisineFilter filters={cuisineFilters} active={activeCuisine} onChange={setActiveCuisine} />
-
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((r, i) => (
-              <RestaurantCard key={r.id} restaurant={r} index={i} />
-            ))}
-          </div>
-
-          {filtered.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No se encontraron restaurantes para esta categoría</p>
+          {restaurant.promo && (
+            <div className="mt-4 gradient-brand text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold text-center">
+              {restaurant.promo}
             </div>
           )}
-        </section>
+        </motion.div>
+      </div>
+
+      {/* Menu */}
+      <main className="container mx-auto px-4 pb-32">
+        {/* Category tabs */}
+        <div className="mt-6 flex gap-2 overflow-x-auto scrollbar-hide sticky top-16 z-40 bg-background py-3">
+          {restaurant.categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                activeCategory === cat.id
+                  ? 'gradient-brand text-primary-foreground shadow-brand'
+                  : 'bg-secondary text-secondary-foreground hover:bg-muted'
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Menu items */}
+        <div className="mt-4 space-y-8">
+          {restaurant.categories
+            .filter(cat => cat.id === activeCategory)
+            .map(cat => (
+              <div key={cat.id}>
+                <h2 className="text-lg font-bold text-foreground mb-3">{cat.name}</h2>
+                <div className="space-y-3">
+                  {cat.items.map(item => (
+                    <MenuItemCard
+                      key={item.id}
+                      item={item}
+                      restaurantId={restaurant.id}
+                      restaurantName={restaurant.name}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+        </div>
       </main>
 
       <FloatingCart />
