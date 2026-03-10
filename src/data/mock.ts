@@ -1,7 +1,7 @@
 import { Restaurant } from './types';
 
 export const cuisineFilters = [
-  'Todas', 'Hamburguesas', 'Pizza', 'Mexicana', 'Sushi', 'Pollo', 'Postres', 'Saludable', 'China', 'Italiana',
+  'Todas', 'Hamburguesas', 'Pizza', 'comida china', 'Mexicana', 'Sushi', 'Pollo', 'Postres', 'Saludable', 'China', 'Italiana',
 ];
 
 export const restaurants: Restaurant[] = [
