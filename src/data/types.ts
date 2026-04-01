@@ -1,54 +1,61 @@
-export interface Trend {
+export interface Match {
   id: string;
-  title: string;
-  description: string;
-  category: TrendCategory;
-  region: string;
-  volume: number;
-  change: number;
-  hashtags: string[];
-  relatedTopics: string[];
-  source: string;
-  updatedAt: string;
-}
-
-export type TrendCategory = 
-  | 'tecnología'
-  | 'entretenimiento'
-  | 'moda'
-  | 'deportes'
-  | 'negocios'
-  | 'salud'
-  | 'comida'
-  | 'viajes';
-
-export interface ContentIdea {
-  id: string;
-  type: ContentType;
-  title: string;
-  caption: string;
-  hashtags: string[];
-  visualStyle: string;
-  colorPalette: string[];
-  trendId?: string;
-  createdAt: string;
-  scheduled?: string;
-}
-
-export type ContentType = 'post' | 'reel' | 'story' | 'carousel';
-
-export interface CalendarDay {
+  homeTeam: string;
+  awayTeam: string;
+  league: string;
   date: string;
-  contents: ContentIdea[];
+  time: string;
+  homeOdds: number;
+  drawOdds: number;
+  awayOdds: number;
+  prediction?: MatchPrediction;
 }
 
-export interface UserProfile {
+export interface MatchPrediction {
+  result: 'home' | 'draw' | 'away';
+  confidence: number;
+  analysis: string;
+  suggestedBet: string;
+  expectedGoals: { home: number; away: number };
+}
+
+export interface SlotMachine {
+  id: string;
   name: string;
-  email: string;
-  avatar: string;
-  instagramHandle: string;
-  niche: string;
-  postsThisWeek: number;
-  followers: number;
-  engagement: number;
+  provider: string;
+  rtp: number;
+  volatility: 'baja' | 'media' | 'alta';
+  minBet: number;
+  maxBet: number;
+  theme: string;
+}
+
+export interface SlotPrediction {
+  machineId: string;
+  strategy: string;
+  riskLevel: 'bajo' | 'medio' | 'alto';
+  suggestedBet: number;
+  analysis: string;
+  tips: string[];
+}
+
+export interface PredictionRecord {
+  id: string;
+  type: 'football' | 'slots';
+  title: string;
+  prediction: string;
+  result?: 'win' | 'lose' | 'pending';
+  confidence: number;
+  date: string;
+  profit?: number;
+}
+
+export interface UserStats {
+  totalPredictions: number;
+  wins: number;
+  losses: number;
+  pending: number;
+  winRate: number;
+  totalProfit: number;
+  streak: number;
 }

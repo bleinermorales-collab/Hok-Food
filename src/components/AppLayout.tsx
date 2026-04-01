@@ -3,20 +3,20 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
-  TrendingUp,
-  PenTool,
-  CalendarDays,
+  Trophy,
+  Dice5,
+  History,
   User,
   Menu,
   X,
-  Sparkles,
+  Zap,
 } from 'lucide-react';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/trends', label: 'Tendencias', icon: TrendingUp },
-  { path: '/create', label: 'Crear', icon: PenTool },
-  { path: '/calendar', label: 'Calendario', icon: CalendarDays },
+  { path: '/football', label: 'Fútbol', icon: Trophy },
+  { path: '/slots', label: 'Slots', icon: Dice5 },
+  { path: '/history', label: 'Historial', icon: History },
   { path: '/profile', label: 'Perfil', icon: User },
 ];
 
@@ -27,17 +27,20 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-background">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 w-64 border-r border-border bg-card z-50">
+      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 w-60 border-r border-border bg-card z-50">
         <div className="p-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold text-foreground">InstaCreator</span>
+            <div>
+              <span className="text-base font-bold text-foreground">BetPredict</span>
+              <span className="text-[10px] ml-1 font-semibold text-primary">AI</span>
+            </div>
           </Link>
         </div>
 
-        <nav className="flex-1 px-3 space-y-1">
+        <nav className="flex-1 px-3 space-y-0.5">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -50,17 +53,17 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-[18px] h-[18px]" />
                 {item.label}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 mx-3 mb-4 gradient-subtle rounded-xl">
-          <p className="text-xs font-semibold text-foreground mb-1">Pro Tip ✨</p>
-          <p className="text-xs text-muted-foreground">
-            Publica en las horas pico para maximizar tu alcance.
+        <div className="p-4 mx-3 mb-4 bg-accent rounded-xl">
+          <p className="text-xs font-semibold text-accent-foreground mb-1">⚡ Pro Tip</p>
+          <p className="text-[11px] text-muted-foreground leading-relaxed">
+            Las predicciones con +70% de confianza tienen mayor tasa de acierto.
           </p>
         </div>
       </aside>
@@ -69,10 +72,11 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <header className="md:hidden sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 gradient-brand rounded-lg flex items-center justify-center">
-              <Sparkles className="w-3.5 h-3.5 text-primary-foreground" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="text-base font-bold text-foreground">InstaCreator</span>
+            <span className="text-sm font-bold text-foreground">BetPredict</span>
+            <span className="text-[10px] font-semibold text-primary">AI</span>
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -137,8 +141,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       </nav>
 
       {/* Main Content */}
-      <main className="md:ml-64 min-h-screen pb-20 md:pb-0">
-        <div className="max-w-6xl mx-auto p-4 md:p-8">
+      <main className="md:ml-60 min-h-screen pb-20 md:pb-0">
+        <div className="max-w-5xl mx-auto p-4 md:p-8">
           {children}
         </div>
       </main>
